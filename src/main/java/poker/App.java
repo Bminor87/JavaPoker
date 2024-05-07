@@ -130,17 +130,6 @@ public class App {
             }
         }
 
-        if (score > highScore) {
-            highScore = score;
-            try {
-                FileWriter writer = new FileWriter(HIGH_SCORE_FILE);
-                writer.write(Integer.toString(highScore));
-                writer.close();
-            } catch (IOException e) {
-                System.out.println("Error writing high score file.");
-            }
-        }
-
         System.out.print(winner.getColor() != null ? winner.getColor() : "");
         System.out.println(winner + " with " + score + " points!");
         System.out.println(ANSI_RESET);
@@ -178,7 +167,7 @@ public class App {
         System.out.println("");
         System.out.println(ANSI_PURPLE);
         if (round > numRounds) {
-            System.out.println("Final Scoreboard");
+            System.out.println("Final Scoreboard                    "+ANSI_CYAN+" High Score: " + highScore);
         } else {
             System.out.println("Round " + round + " of " + numRounds + "         "+ANSI_CYAN+" High Score: " + highScore);
         }
@@ -217,6 +206,20 @@ public class App {
     public void addPoints() {
         for (Player player : players) {
             player.setScore(player.getScore() + player.getHand().getHandPoints());
+
+            int score = player.getScore();
+
+            if (score > highScore) {
+                highScore = score;
+                try {
+                    FileWriter writer = new FileWriter(HIGH_SCORE_FILE);
+                    writer.write(Integer.toString(highScore));
+                    writer.close();
+                } catch (IOException e) {
+                    System.out.println("Error writing high score file.");
+                }
+            }
+
         }
     }
 
