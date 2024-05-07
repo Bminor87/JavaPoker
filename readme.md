@@ -6,3 +6,5 @@ Each round awards points according to the hand after the swap.
 Drew a Royal Flush out of the bat? Sorry, you got to swap one out.
 
 Made with the help of course material from [Ohjelmointi2](https://ohjelmointi2.github.io) by [swd1tn002](https://github.com/swd1tn002)
+
+- Run with <code>./gradlew run --console=plain</code>
