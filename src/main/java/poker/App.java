@@ -1,6 +1,11 @@
 package poker;
 
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class App {
 
@@ -13,7 +18,11 @@ public class App {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
+    public static final String HIGH_SCORE_FILE = "highscore.txt";
+
     public static Scanner scanner = new Scanner(System.in);
+
+    public int highScore = 0;
 
     public Deck deck = new Deck();
 
@@ -30,6 +39,14 @@ public class App {
     public static void main(String[] args) {
 
         App app = new App();
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(HIGH_SCORE_FILE));
+            app.highScore = Integer.parseInt(reader.readLine());
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Error reading high score file.");
+        }
 
         app.run();
 
@@ -112,6 +129,18 @@ public class App {
                 winner = player;
             }
         }
+
+        if (score > highScore) {
+            highScore = score;
+            try {
+                FileWriter writer = new FileWriter(HIGH_SCORE_FILE);
+                writer.write(Integer.toString(highScore));
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Error writing high score file.");
+            }
+        }
+
         System.out.print(winner.getColor() != null ? winner.getColor() : "");
         System.out.println(winner + " with " + score + " points!");
         System.out.println(ANSI_RESET);
@@ -151,7 +180,7 @@ public class App {
         if (round > numRounds) {
             System.out.println("Final Scoreboard");
         } else {
-            System.out.println("Round " + round + " of " + numRounds);
+            System.out.println("Round " + round + " of " + numRounds + "         "+ANSI_CYAN+" High Score: " + highScore);
         }
         System.out.println(ANSI_YELLOW);
         System.out.println("----------------------------------------------------------");
